@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Quản Trị - VietinBank CN600</title>
+<style>
+  :root {
+    --primary: #003580;
+    --primary-light: #0050b8;
+    --primary-dark: #001d4e;
+    --accent: #e4002b;
+    --accent-hover: #ff1744;
+    --bg-gradient: linear-gradient(135deg, #00449e 0%, #003580 50%, #001d4e 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --card-hover: #ffffff;
+    --border: rgba(255, 255, 255, 0.2);
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 24px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--accent), #ff4757);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(228, 0, 43, 0.4);
+  }
+
+  .logo-text h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .logo-text p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 2px;
+  }
+
+  /* Search Box */
+  .search-container {
+    position: relative;
+    flex: 0 1 400px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 12px 20px 12px 48px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-size: 14px;
+    color: #ffffff;
+    transition: var(--transition);
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .search-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    opacity: 0.7;
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    max-width: 1400px;
+    margin: 24px auto;
+    padding: 0 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  /* Main Content */
+  .main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px 60px;
+  }
+
+  /* Section Header */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 32px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .section-count {
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* Card Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  /* Card Styles */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .card:hover {
+    background: var(--card-hover);
+    border-color: transparent;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    transition: var(--transition);
+  }
+
+  .card:hover .card-icon {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 53, 128, 0.2);
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .card-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+
+  .card-arrow {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 53, 128, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--primary);
+    transition: var(--transition);
+  }
+
+  .card:hover .card-arrow {
+    background: var(--primary);
+    color: #ffffff;
+    transform: translateX(4px);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 40px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+  }
+
+  .footer-highlight {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* No Results */
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    display: none;
+  }
+
+  .no-results-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  .no-results h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header {
+      padding: 16px 20px;
+    }
+
+    .header-content {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .logo-section {
+      justify-content: center;
+    }
+
+    .search-container {
+      flex: 1 1 100%;
+    }
+
+    .stats-bar {
+      padding: 0 20px;
+    }
+
+    .stat-card {
+      min-width: calc(50% - 8px);
+    }
+
+    .main-content {
+      padding: 0 20px 40px;
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.4s; }
+  .card:nth-child(9) { animation-delay: 0.45s; }
+  .card:nth-child(10) { animation-delay: 0.5s; }
+  .card:nth-child(11) { animation-delay: 0.55s; }
+  .card:nth-child(12) { animation-delay: 0.6s; }
+  .card:nth-child(13) { animation-delay: 0.65s; }
+  .card:nth-child(14) { animation-delay: 0.7s; }
+  .card:nth-child(15) { animation-delay: 0.75s; }
+  .card:nth-child(16) { animation-delay: 0.8s; }
+  .card:nth-child(17) { animation-delay: 0.85s; }
+  .card:nth-child(18) { animation-delay: 0.9s; }
+  .card:nth-child(19) { animation-delay: 0.95s; }
+  .card:nth-child(20) { animation-delay: 1s; }
+  .card:nth-child(21) { animation-delay: 1.05s; }
+  .card:nth-child(22) { animation-delay: 1.1s; }
+  .card:nth-child(23) { animation-delay: 1.15s; }
+  .card:nth-child(24) { animation-delay: 1.2s; }
+
+  /* Dark mode badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">🏦</div>
+        <div class="logo-text">
+          <h1>Dashboard Quản Trị</h1>
+          <p>VietinBank Chi Nhánh 600 - Hệ thống quản lý tool & tự động hóa</p>
+        </div>
+      </div>
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm tool, chức năng...">
+      </div>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value" id="totalTools">24</div>
+      <div class="stat-label">Tổng số tool</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">6</div>
+      <div class="stat-label">Nhóm chức năng</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">12</div>
+      <div class="stat-label">GitHub Pages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">5</div>
+      <div class="stat-label">N8N Workflows</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- No Results Message -->
+    <div class="no-results" id="noResults">
+      <div class="no-results-icon">🔍</div>
+      <h3>Không tìm thấy kết quả</h3>
+      <p>Thử tìm kiếm với từ khóa khác</p>
+    </div>
+
+    <!-- NHÓM 1: Tools Xử lý PDF & Hình ảnh -->
+    <section class="section" data-category="pdf">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">📄</span>
+          Xử lý PDF & Hình ảnh
+        </h2>
+        <span class="section-count">6 tool</span>
+      </div>
+      <div class="card-grid">
+        <a href="https://vtb600.github.io/pdf/" target="_blank" class="card" data-search="ghép tách xoá pdf offline">
+          <div class="card-header">
+            <div class="card-icon">✂️</div>
+            <div class="card-info">
+              <div class="card-title">GHÉP / TÁCH / XOÁ PDF</div>
+              <div class="card-description">Ghép, tách, xoá trang PDF offline hoàn toàn</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb.github.io/pdf</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/nenpdf/" target="_blank" class="card" data-search="nén dung lượng pdf offline">
+          <div class="card-header">
+            <div class="card-icon">📦</div>
+            <div class="card-info">
+              <div class="card-title">NÉN DUNG LƯỢNG FILE PDF</div>
+              <div class="card-description">Giảm kích thước PDF giữ nguyên chất lượng</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb.github.io/nenpdf</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/markdown/" target="_blank" class="card" data-search="chuyển pdf sang markdown ai">
+          <div class="card-header">
+            <div class="card-icon">📝</div>
+            <div class="card-info">
+              <div class="card-title">PDF → MARKDOWN</div>
+              <div class="card-description">Chuyển PDF sang Markdown cho AI xử lý</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/markdown</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://n8n.vtb600.website/form/pdf" target="_blank" class="card" data-search="chuyển pdf sang xlsx n8n">
+          <div class="card-header">
+            <div class="card-icon">📊</div>
+            <div class="card-info">
+              <div class="card-title">PDF → XLSX</div>
+              <div class="card-description">Chuyển PDF sang Excel qua N8N automation</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> n8n.vtb600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/removebg/" target="_blank" class="card" data-search="xoá nền ảnh trong suốt transparent">
+          <div class="card-header">
+            <div class="card-icon">🖼️</div>
+            <div class="card-info">
+              <div class="card-title">XOÁ NỀN ẢNH (TRONG SUỐT)</div>
+              <div class="card-description">Xóa background tạo ảnh trong suốt PNG</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb.github.io/removebg</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/hinh/" target="_blank" class="card" data-search="xoá nền ảnh trắng">
+          <div class="card-header">
+            <div class="card-icon">🎨</div>
+            <div class="card-info">
+              <div class="card-title">XOÁ NỀN ẢNH (TRẮNG)</div>
+              <div class="card-description">Xóa background thay bằng màu trắng</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb.github.io/hinh</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- NHÓM 2: N8N & Automation -->
+    <section class="section" data-category="n8n">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">⚡</span>
+          N8N & Tự động hóa
+        </h2>
+        <span class="section-count">6 tool</span>
+      </div>
+      <div class="card-grid">
+        <a href="https://n8n.vtb600.website/" target="_blank" class="card" data-search="n8n docker desktop laptop">
+          <div class="card-header">
+            <div class="card-icon">🐳</div>
+            <div class="card-info">
+              <div class="card-title">N8N DOCKER</div>
+              <div class="card-description">N8N chạy trên Docker Desktop - Laptop làm việc</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> n8n.vtb600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://ubt.vtb600.website/" target="_blank" class="card" data-search="n8n ubuntu server">
+          <div class="card-header">
+            <div class="card-icon">🐧</div>
+            <div class="card-info">
+              <div class="card-title">N8N UBUNTU</div>
+              <div class="card-description">N8N chạy trên Ubuntu Server production</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> ubt.vtb600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://filebrowser.cn600.website/" target="_blank" class="card" data-search="file browser quản lý file">
+          <div class="card-header">
+            <div class="card-icon">📁</div>
+            <div class="card-info">
+              <div class="card-title">FILE BROWSER</div>
+              <div class="card-description">Quản lý file trực tuyến trên server</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> filebrowser.cn600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://n8n.vtb600.website/form/hoadon/" target="_blank" class="card" data-search="lấy xml hóa đơn email vietinbank">
+          <div class="card-header">
+            <div class="card-icon">📜</div>
+            <div class="card-info">
+              <div class="card-title">LẤY FILE XML HÓA ĐƠN</div>
+              <div class="card-description">Tự động lấy XML gửi về email VietinBank</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> n8n.vtb600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://n8n.vtb600.website/form/thunhap/" target="_blank" class="card" data-search="thu nhập 2025 email">
+          <div class="card-header">
+            <div class="card-icon">💰</div>
+            <div class="card-info">
+              <div class="card-title">LẤY FILE THU NHẬP 2025</div>
+              <div class="card-description">Tự động lấy thông tin thu nhập về email</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> n8n.vtb600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://ubt.vtb600.website/webhook/hoanung/" target="_blank" class="card" data-search="xử lý hóa đơn tiếp khách workflow">
+          <div class="card-header">
+            <div class="card-icon">🧾</div>
+            <div class="card-info">
+              <div class="card-title">XỬ LÝ HÓA ĐƠN TIẾP KHÁCH</div>
+              <div class="card-description">Chạy workflow xử lý hóa đơn tiếp khách</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> ubt.vtb600.website</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- NHÓM 3: HSCB & Văn bản -->
+    <section class="section" data-category="hscb">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">📑</span>
+          HSCB & Xử lý Văn bản
+        </h2>
+        <span class="section-count">4 tool</span>
+      </div>
+      <div class="card-grid">
+        <a href="https://vtb600.github.io/HSCB-SOVB/" target="_blank" class="card" data-search="đánh dấu tách hscb số quyết định 1 trang">
+          <div class="card-header">
+            <div class="card-icon">📋</div>
+            <div class="card-info">
+              <div class="card-title">HSCB THEO SỐ (1 TRANG)</div>
+              <div class="card-description">Đánh dấu & tách hồ sơ theo số quyết định</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/HSCB-SOVB</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/HSCB-STAMP/" target="_blank" class="card" data-search="đánh dấu tách hscb tiêu đề đa dạng">
+          <div class="card-header">
+            <div class="card-icon">🏷️</div>
+            <div class="card-info">
+              <div class="card-title">HSCB THEO TIÊU ĐỀ</div>
+              <div class="card-description">Xử lý văn bản đa dạng theo tiêu đề</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/HSCB-STAMP</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/HSCB-HDLD/" target="_blank" class="card" data-search="đánh dấu tách hscb hợp đồng lao động nhiều trang">
+          <div class="card-header">
+            <div class="card-icon">📑</div>
+            <div class="card-info">
+              <div class="card-title">HSCB THEO SỐ (NHIỀU TRANG)</div>
+              <div class="card-description">Xử lý HĐLĐ theo số - nhiều trang</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/HSCB-HDLD</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/replace-word/" target="_blank" class="card" data-search="thay thế văn bản nhiều file mua sắm">
+          <div class="card-header">
+            <div class="card-icon">🔄</div>
+            <div class="card-info">
+              <div class="card-title">THAY THẾ VĂN BẢN</div>
+              <div class="card-description">Tìm & thay thế text trong nhiều file cùng lúc</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/replace-word</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- NHÓM 4: Tool Ngân hàng & KPI -->
+    <section class="section" data-category="banking">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">🏦</span>
+          Tool Ngân hàng & KPI
+        </h2>
+        <span class="section-count">4 tool</span>
+      </div>
+      <div class="card-grid">
+        <a href="https://vtb600.github.io/kpi/" target="_blank" class="card" data-search="kpi dashboard theo dõi cn600">
+          <div class="card-header">
+            <div class="card-icon">📈</div>
+            <div class="card-info">
+              <div class="card-title">KPI DASHBOARD</div>
+              <div class="card-description">Theo dõi KPI Chi nhánh 600</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/kpi</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/atm/" target="_blank" class="card" data-search="mở tài khoản atm số lượng lớn">
+          <div class="card-header">
+            <div class="card-icon">🏧</div>
+            <div class="card-info">
+              <div class="card-title">HỖ TRỢ MỞ TÀI KHOẢN</div>
+              <div class="card-description">Mở tài khoản ATM số lượng lớn</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/atm</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/atm-cpm/" target="_blank" class="card" data-search="xử lý file scan up cpm m01">
+          <div class="card-header">
+            <div class="card-icon">📤</div>
+            <div class="card-info">
+              <div class="card-title">XỬ LÝ SCAN & UP CPM</div>
+              <div class="card-description">Xử lý file scan M01 và upload lên CPM</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/atm-cpm</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/lx600/" target="_blank" class="card" data-search="báo cáo xăng xe lx600">
+          <div class="card-header">
+            <div class="card-icon">🚗</div>
+            <div class="card-info">
+              <div class="card-title">BÁO CÁO XĂNG XE LX600</div>
+              <div class="card-description">Quản lý và báo cáo nhiên liệu xe LX600</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/lx600</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- NHÓM 5: Dev & Links -->
+    <section class="section" data-category="dev">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-icon">💻</span>
+          Dev & Liên kết
+        </h2>
+        <span class="section-count">4 tool</span>
+      </div>
+      <div class="card-grid">
+        <a href="https://github.com/vtb600/" target="_blank" class="card" data-search="github vietinbank600 repository">
+          <div class="card-header">
+            <div class="card-icon">🐙</div>
+            <div class="card-info">
+              <div class="card-title">GITHUB VIETINBANK600</div>
+              <div class="card-description">Kho lưu trữ mã nguồn và project</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> github.com/vtb600</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/ico/" target="_blank" class="card" data-search="tạo icon ico build app python">
+          <div class="card-header">
+            <div class="card-icon">🎨</div>
+            <div class="card-info">
+              <div class="card-title">TẠO ICON (.ICO)</div>
+              <div class="card-description">Tạo file icon để build ứng dụng Python</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/ico</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/vhdn/" target="_blank" class="card" data-search="website vhdn cn600 nội bộ">
+          <div class="card-header">
+            <div class="card-icon">🌐</div>
+            <div class="card-info">
+              <div class="card-title">WEBSITE VHDN</div>
+              <div class="card-description">Website Văn hóa Doanh nghiệp CN600</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/vhdn</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="https://vtb600.github.io/point/" target="_blank" class="card" data-search="chấm điểm đào tạo training">
+          <div class="card-header">
+            <div class="card-icon">🎯</div>
+            <div class="card-info">
+              <div class="card-title">CHẤM ĐIỂM ĐÀO TẠO</div>
+              <div class="card-description">Hệ thống chấm điểm đào tạo nhân viên</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="card-status"><span class="status-dot"></span> vtb600.github.io/point</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2024 <span class="footer-highlight">VietinBank Chi Nhánh 600</span> | Cập nhật lần cuối: <span id="update-time"></span></p>
+    </div>
+  </footer>
+
+  <script>
+    // Update time
+    document.getElementById('update-time').textContent = new Date().toLocaleString('vi-VN');
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.card');
+    const sections = document.querySelectorAll('.section');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      let hasResults = false;
+
+      cards.forEach(card => {
+        const searchData = card.getAttribute('data-search').toLowerCase();
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const description = card.querySelector('.card-description').textContent.toLowerCase();
+
+        if (searchTerm === '' || searchData.includes(searchTerm) || title.includes(searchTerm) || description.includes(searchTerm)) {
+          card.style.display = 'flex';
+          hasResults = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show/hide sections based on visible cards
+      sections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.card[style*="display: flex"], .card:not([style*="display: none"])');
+        const hasVisibleCards = Array.from(section.querySelectorAll('.card')).some(c => c.style.display !== 'none');
+        section.style.display = hasVisibleCards ? 'block' : 'none';
+      });
+
+      // Show no results message
+      noResults.style.display = hasResults ? 'none' : 'block';
+    });
+
+    // Add keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+  </script>
+
+</body>
+</html>
